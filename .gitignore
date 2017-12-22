@@ -5,3 +5,8 @@ node_modules
 npm-debug.log*
 .eslintcache
 package-lock.json
+/dist/swagger-editor-bundle.js
+/dist/swagger-editor.js
+/dist/swagger-editor.css
+/dist/swagger-editor-standalone-preset.js
+/dist/validation.worker.js

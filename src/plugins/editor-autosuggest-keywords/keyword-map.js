@@ -1,3 +1,4 @@
+import {KeywordSuggest} from "api-mocker"
 
 var Bool = ["true", "false"]
 var Anything = String
@@ -154,7 +155,7 @@ var reference = {
   "$ref": String
 }
 
-var response = {
+var response = KeywordSuggest.changeResponse(header,{
   description: String,
   schema: schema,
   headers: {
@@ -163,7 +164,7 @@ var response = {
     })
   },
   examples: String
-}
+})
 
 var operation = {
   summary: String,
@@ -194,7 +195,7 @@ var securityScheme = {
   scopes: String // actually an object, but this is equivalent
 }
 
-var info = {
+var info = KeywordSuggest.changeInfo({
   version: String,
   title: String,
   description: String,
@@ -208,7 +209,9 @@ var info = {
     name: String,
     url: String
   }
-}
+})
+
+
 
 var map = {
   swagger: ["\'2.0\'"],
