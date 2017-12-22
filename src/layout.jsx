@@ -18,13 +18,19 @@ export default class EditorLayout extends React.Component {
   }
 
   render() {
-    let { getComponent } = this.props
+    let { getComponent,commonSelectors } = this.props
+    // console.log(commonSelectors,commonSelectors.login());
+    let LoginFrame = getComponent("LoginFrame",true)
 
     let UIBaseLayout = getComponent("BaseLayout", true)
 
     let Container = getComponent("Container")
     let EditorContainer = getComponent("EditorContainer", true)
     const SplitPaneMode = getComponent("SplitPaneMode", true)
+
+    if(LoginFrame && !commonSelectors.login()){
+      return <LoginFrame/>;
+    }
 
     return (
       <div>

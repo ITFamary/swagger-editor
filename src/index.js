@@ -13,6 +13,7 @@ import EditorAutosuggestKeywordsPlugin from "./plugins/editor-autosuggest-keywor
 import EditorAutosuggestOAS3KeywordsPlugin from "./plugins/editor-autosuggest-oas3-keywords"
 import EditorAutosuggestRefsPlugin from "./plugins/editor-autosuggest-refs"
 import JumpToPathPlugin from "./plugins/jump-to-path"
+import CommonPlugin from "./plugins/common"
 
 // eslint-disable-next-line no-undef
 const { GIT_DIRTY, GIT_COMMIT, PACKAGE_VERSION } = buildInfo
@@ -20,6 +21,7 @@ const { GIT_DIRTY, GIT_COMMIT, PACKAGE_VERSION } = buildInfo
 window.versions = window.versions || {}
 window.versions.swaggerEditor = `${PACKAGE_VERSION}/${GIT_COMMIT || "unknown"}${GIT_DIRTY ? "-dirty" : ""}`
 const plugins = {
+  CommonPlugin,
   EditorPlugin,
   ValidationPlugin,
   ValidationApiPlugin,

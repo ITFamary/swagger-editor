@@ -10,3 +10,4 @@ package-lock.json
 /dist/swagger-editor.css
 /dist/swagger-editor-standalone-preset.js
 /dist/validation.worker.js
+_mockServer
