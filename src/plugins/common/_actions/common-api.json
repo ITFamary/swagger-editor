@@ -1,0 +1,282 @@
+{
+  "swagger": "2.0-with-api-mocker-1.0",
+  "info": {
+    "title": "项目管理",
+    "version": "1.0.0-SNAPSHOT",
+    "id": "common-solution-manager",
+    "branch": "master"
+  },
+  "tags": [
+    {
+      "name": "sync",
+      "description": "同步相关"
+    },
+    {
+      "name": "login",
+      "description": "登录相关"
+    }
+  ],
+  "paths": {
+    "/projectBranches/{id}": {
+      "post": {
+        "summary": "从特定建立新分支，并且获取该分支的api yaml",
+        "description": "新建分支",
+        "tags": [
+          "sync"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "from",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "description": "来源分支名称"
+                },
+                "to": {
+                  "type": "string",
+                  "description": "新分支名称"
+                }
+              },
+              "required": [
+                "from",
+                "to"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "结果同GET /projectApiYaml",
+            "schema": {
+              "type": "string",
+              "default": "mock"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "获取某个项目所有的分支",
+        "description": "所有分支",
+        "tags": [
+          "sync"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "基于分支的array",
+            "schema": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projectApiYaml/{id}/{branch}": {
+      "put": {
+        "summary": "更新该项目分支的api yaml",
+        "description": "需要把所有内容法伤",
+        "tags": [
+          "sync"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "branch",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "正常的结果"
+          }
+        }
+      },
+      "get": {
+        "summary": "获取项目某个分支的api yaml",
+        "description": "基本上就是这个api的schema 所以mock无需赘述，前端收获的数据是含有mock字段的即认为来自mock服务器，渲染本json的yaml即可",
+        "tags": [
+          "sync"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "branch",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "default": "mock"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "执行登录",
+        "description": "登录完成之后应该获取跟loginStatus一样的响应；mock时用户名为error就登录失败",
+        "tags": [
+          "login"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded",
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "cookies": {
+              "name": {
+                "type": "string",
+                "default": {
+                  "__script": "username"
+                }
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/LoginStatus",
+              "properties": {
+                "loginName": {
+                  "default": {
+                    "__script": "username"
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "无效的登录",
+            "condition": {
+              "script": "username==='error'"
+            }
+          }
+        }
+      }
+    },
+    "/loginStatus": {
+      "get": {
+        "summary": "获取登录状态",
+        "description": "包含权限信息",
+        "tags": [
+          "login"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LoginStatus",
+              "properties": {
+                "loginName": {
+                  "default": {
+                    "__script": "__request.cookies.name"
+                  }
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "无效的登录",
+            "condition": {
+              "script": "!__request.cookies.name"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ProjectAuthority": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "项目id"
+        },
+        "write": {
+          "type": "boolean",
+          "description": "是否可以写入"
+        },
+        "read": {
+          "type": "boolean",
+          "description": "是否可以读取"
+        }
+      }
+    },
+    "LoginStatus": {
+      "type": "object",
+      "properties": {
+        "loginName": {
+          "type": "string",
+          "description": "登录名"
+        },
+        "projectAuthorities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectAuthority"
+          }
+        }
+      },
+      "required": [
+        "loginName"
+      ]
+    }
+  }
+}

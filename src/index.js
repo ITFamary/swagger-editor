@@ -25,7 +25,8 @@ const plugins = {
   EditorPlugin,
   ValidationPlugin,
   ValidationApiPlugin,
-  LocalStoragePlugin,
+  // common实现中将从线上给予数据，所以不再走本地储存
+  // LocalStoragePlugin,
   EditorAutosuggestPlugin,
   EditorAutosuggestSnippetsPlugin,
   EditorAutosuggestKeywordsPlugin,
