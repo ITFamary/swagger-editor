@@ -40,6 +40,7 @@ module.exports = require("./make-webpack-config.js")({
 
 	devtool: "inline-source-map",
   devServer: {
+    historyApiFallback: true,
     port: 3200,
     contentBase: path.join(__dirname, "dev-helpers"),
     publicPath: "/",

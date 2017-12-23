@@ -24,7 +24,7 @@
     "deps-size": "webpack -p --config webpack.check.js --json | webpack-bundle-size-analyzer >| $npm_package_config_deps_check_dir/sizes.txt",
     "predev": "npm install",
     "dev": "npm-run-all --parallel hot-server open-dev",
-    "hot-server": "webpack-dev-server-with-api-mocker --localApiFile common-api.json --host 0.0.0.0 --config webpack-hot-dev-server.config.js --inline --hot --progress --content-base dev-helpers/",
+    "hot-server": "wds-with-api-mocker --localApiFile common-api.json --host 0.0.0.0 --config webpack-hot-dev-server.config.js --inline --hot --progress --content-base dev-helpers/",
     "open-dev": "sleep 3 && node -e 'require(\"open\")(\"http://localhost:3200\")'",
     "open-static": "node -e 'require(\"open\")(\"http://localhost:3001\")'",
     "lint": "eslint --cache --ext '.js,.jsx' src test",

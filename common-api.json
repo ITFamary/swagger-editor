@@ -15,8 +15,7 @@
         "tags": ["login"],
         "consumes": [
           "application/x-www-form-urlencoded",
-          "multipart/form-data",
-          "application/json"
+          "multipart/form-data"
         ],
         "parameters": [
           {
@@ -35,7 +34,7 @@
         "responses": {
           "200": {
             "description": "OK",
-            "cookie": {
+            "cookies": {
               "name": {
                 "type": "string",
                 "default": {
@@ -76,7 +75,7 @@
               "properties": {
                 "loginName": {
                   "default": {
-                    "__script": "__request.cookie.name"
+                    "__script": "__request.cookies.name"
                   }
                 }
               }
@@ -85,7 +84,7 @@
           "302": {
             "description": "无效的登录",
             "condition": {
-              "script": "!__request.cookie.name"
+              "script": "!__request.cookies.name"
             }
           }
         }
@@ -95,6 +94,7 @@
   "definitions": {
     "ProjectAuthority": {
       "type": "object",
+      "required": ["id"],
       "properties": {
         "id": {
           "type": "string",
@@ -123,7 +123,8 @@
             "$ref": "#/definitions/ProjectAuthority"
           }
         }
-      }
+      },
+      "required": ["loginName"]
     }
   }
 }

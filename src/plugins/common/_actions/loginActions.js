@@ -1,4 +1,4 @@
-// import "whatwg-fetch";
+import "whatwg-fetch";
 import { loginConstants } from "../_constants";
 
 export function refreshRequest() {
@@ -42,7 +42,7 @@ export function loginFailed(msg) {
  * @param {String} password
  */
 export function login(username, password) {
-  return ({ fn, commonActions }) => {
+  return ({ commonActions }) => {
     commonActions.loginRequest();
 
     var formData = new FormData();
@@ -50,8 +50,7 @@ export function login(username, password) {
     formData.append("username", username);
     formData.append("password", password);
 
-    fn
-      .fetch("/login", {
+    fetch("/login",{
         method: "post",
         credentials: "include",
         body: formData
@@ -77,11 +76,12 @@ export function login(username, password) {
  * 自动刷新登录状态
  */
 export function refresh() {
-  return ({ fn, commonActions }) => {
+  return ({ commonActions,specSelectors }) => {
     commonActions.refreshRequest();
+    console.log('specSelectors',specSelectors);
 
-    fn
-      .fetch("/loginStatus", {
+    console.log('i am refreshing.');
+    fetch("/loginStatus",{
         credentials: "include"
       })
       .then(response => {

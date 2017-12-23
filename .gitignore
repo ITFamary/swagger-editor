@@ -11,3 +11,4 @@ package-lock.json
 /dist/swagger-editor-standalone-preset.js
 /dist/validation.worker.js
 _mockServer
+.vscode
