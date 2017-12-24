@@ -7,19 +7,16 @@ export default {
     return state
       .set("currentApiId", payload.id)
       .set("currentCommitId", payload.commitId);
+  },
+  [syncConstants.GET_BRANCHES_REQUESTED]: state => {
+    // start request
+    return state.set("branchFetching", true);
+  },
+  [syncConstants.GET_BRANCHES_SUCCESS]: (state, { payload }) => {
+    console.log("GET_BRANCHES_SUCCESS", payload);
+    return state.delete("branchFetching").set("branches", payload);
+  },
+  [syncConstants.GET_BRANCHES_FAILED]: state => {
+    return state.delete("branchFetching");
   }
 };
-
-// export function refresh(state, action) {
-// console.log(action);
-//   switch (action.type) {
-//     case loginConstants.REFRESH_SUCCESS:
-//       state.set("login", action.data);
-//       return state;
-//     case loginConstants.REFRESH_FAILED:
-//       state.set("login", {});
-//       return state;
-//     default:
-//       return state;
-//   }
-// }

@@ -98,14 +98,51 @@ export function get(id, branch = "master") {
   };
 }
 
+export function branchesRequest(id) {
+  return {
+    type: syncConstants.GET_BRANCHES_REQUESTED,
+    payload: id
+  };
+}
+
+export function branchesSuccess(branches) {
+  return {
+    type: syncConstants.GET_BRANCHES_SUCCESS,
+    payload: branches
+  };
+}
+
+export function branchesFailed(msg) {
+  return {
+    type: syncConstants.GET_BRANCHES_FAILED,
+    payload: msg
+  };
+}
+
 /**
  * 获取分支信息；
  * @param {String} id 项目id，若不传入则使用当前项目id
  */
 export function branches(id) {
   id = typeof id == "string" ? id : undefined;
-  return ({ commonSelectors }) => {
+  return ({ commonSelectors, commonActions }) => {
     const opId = id || commonSelectors.currentApiId();
     console.log("branches of ", opId);
+    commonActions.branchesRequest(opId);
+    fetch("/projectBranches/" + opId, {
+      credentials: "include"
+    })
+      .then(response => {
+        if (!response.ok) return Promise.reject("失败");
+        return response.json();
+      })
+      .then(
+        json => {
+          commonActions.branchesSuccess(json);
+        },
+        error => {
+          commonActions.branchesFailed(error);
+        }
+      );
   };
 }
