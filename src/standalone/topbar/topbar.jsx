@@ -171,6 +171,7 @@ export default class Topbar extends React.Component {
   render() {
     let { getComponent, specSelectors: { isOAS3 },commonActions } = this.props
     const Link = getComponent("Link")
+    const BranchSelector = getComponent("BranchSelector",true)
 
     let showGenerateMenu = !(isOAS3 && isOAS3())
     let showServersMenu = this.state.servers && this.state.servers.length
@@ -230,6 +231,7 @@ export default class Topbar extends React.Component {
             <button className="btn" onClick={this.importFromFile}>Open file</button>
           </div>
         </Modal>
+        <BranchSelector/>
       </div>
 
     )

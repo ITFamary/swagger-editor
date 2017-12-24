@@ -2,6 +2,7 @@ import * as actions from "./_actions";
 import reducers from "./_reducers";
 import * as selectors from "./_selectors";
 import LoginFrame from "./_components/LoginFrame";
+import BranchSelector from './_components/BranchSelector';
 import createHistory from "history/createBrowserHistory";
 const history = createHistory();
 
@@ -45,7 +46,7 @@ export default function(system) {
   // },10000);
 
   return {
-    components: { LoginFrame },
+    components: { LoginFrame,BranchSelector },
     statePlugins: {
       common: {
         reducers,

@@ -10,7 +10,10 @@ export default {
   },
   [syncConstants.GET_BRANCHES_REQUESTED]: state => {
     // start request
-    return state.set("branchFetching", true).set("loadingText", "载入分支中");
+    return state
+      .delete("branches")
+      .set("branchFetching", true)
+      .set("loadingText", "载入分支中");
   },
   [syncConstants.GET_BRANCHES_SUCCESS]: (state, { payload }) => {
     console.log("GET_BRANCHES_SUCCESS", payload);
