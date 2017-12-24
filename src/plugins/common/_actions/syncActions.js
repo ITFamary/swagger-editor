@@ -29,13 +29,33 @@ export function getRequest() {
   };
 }
 
-export function getSuccess(spec) {
-  return ({ specActions }) => {
-    specActions.updateSpec(spec);
-    return {
-      type: syncConstants.GET_SUCCESS,
-      payload: spec
-    };
+/**
+ * 实际的成功抓取到远程数据
+ * @param {String} id
+ * @param {String} commitId
+ * @param {String} spec
+ */
+export function getSuccess2(id, commitId, spec) {
+  return {
+    type: syncConstants.GET_SUCCESS,
+    payload: {
+      commitId,
+      spec,
+      id
+    }
+  };
+}
+
+/**
+ * 成功获取到远程数据时；它会触发2个具体操作
+ * @param {String} id
+ * @param {Object} spec 包含yaml的object
+ */
+export function getSuccess(id, spec) {
+  return ({ commonActions, specActions }) => {
+    specActions.updateSpec(spec.yaml);
+    console.log("make GET_SUCCESS action");
+    commonActions.getSuccess2(id, spec.id, spec);
   };
 }
 
@@ -56,21 +76,36 @@ export function get(id, branch = "master") {
     })
       .then(response => {
         if (!response.ok) return Promise.reject("不存在");
-        return response.text();
+        return response.json();
       })
-      .then(yaml => {
-        // console.log("result yaml:", yaml);
-        if (yaml == "mock") return APIYaml;
-        return yaml;
+      .then(json => {
+        if (json.yaml == "mock")
+          return {
+            yaml: APIYaml,
+            id: null
+          };
+        return json;
       })
       .then(
-        yaml => {
+        json => {
           // console.log("next spec:", yaml);
-          commonActions.getSuccess(yaml);
+          commonActions.getSuccess(id, json);
         },
         error => {
           commonActions.getFailed(error);
         }
       );
+  };
+}
+
+/**
+ * 获取分支信息；
+ * @param {String} id 项目id，若不传入则使用当前项目id
+ */
+export function branches(id) {
+  id = typeof id == "string" ? id : undefined;
+  return ({ commonSelectors }) => {
+    const opId = id || commonSelectors.currentApiId();
+    console.log("branches of ", opId);
   };
 }

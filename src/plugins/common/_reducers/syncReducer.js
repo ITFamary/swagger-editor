@@ -4,7 +4,9 @@ export default {
   [syncConstants.GET_SUCCESS]: (state, { payload }) => {
     console.log("GET_SUCCESS", state);
     // return state.delete("logging").set("login",payload);
-    return state;
+    return state
+      .set("currentApiId", payload.id)
+      .set("currentCommitId", payload.commitId);
   }
 };
 

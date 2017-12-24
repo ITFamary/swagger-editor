@@ -1,5 +1,5 @@
 import * as actions from "./_actions";
-import reducers from "./_reducers/loginReducer";
+import reducers from "./_reducers";
 import * as selectors from "./_selectors";
 import LoginFrame from "./_components/LoginFrame";
 import createHistory from "history/createBrowserHistory";

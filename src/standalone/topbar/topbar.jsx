@@ -169,7 +169,7 @@ export default class Topbar extends React.Component {
   }
 
   render() {
-    let { getComponent, specSelectors: { isOAS3 } } = this.props
+    let { getComponent, specSelectors: { isOAS3 },commonActions } = this.props
     const Link = getComponent("Link")
 
     let showGenerateMenu = !(isOAS3 && isOAS3())
@@ -196,8 +196,11 @@ export default class Topbar extends React.Component {
               <span className="topbar-logo__title">Swagger Editor</span>
             </Link>
             <DropdownMenu {...makeMenuOptions("File")}>
-              <li><button type="button" onClick={this.importFromURL}>Import URL</button></li>
+              {/* <li><button type="button" onClick={this.importFromURL}>Import URL</button></li>
               <li><button type="button" onClick={this.showModal}>Import File</button></li>
+              <li role="separator"></li> */}
+              <li><button type="button" onClick={commonActions.branches}>切换分支</button></li>
+              <li><button type="button" onClick={this.showModal}>新建分支</button></li>
               <li role="separator"></li>
               <li><button type="button" onClick={this.saveAsYaml}>Download YAML</button></li>
               <li><button type="button" onClick={this.saveAsJson}>Download JSON</button></li>
