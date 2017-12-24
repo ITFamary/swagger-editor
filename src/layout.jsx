@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import Loadable from "react-loading-overlay"
 
 export default class EditorLayout extends React.Component {
 
@@ -36,6 +37,8 @@ export default class EditorLayout extends React.Component {
 
     return (
       <div>
+        <Loadable active="true" spinner="true" animate="true" text='Loading your content...'>
+        </Loadable>
         <Container className='container'>
           <SplitPaneMode>
             <EditorContainer
