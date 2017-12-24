@@ -10,13 +10,16 @@ export default {
   },
   [syncConstants.GET_BRANCHES_REQUESTED]: state => {
     // start request
-    return state.set("branchFetching", true);
+    return state.set("branchFetching", true).set("loadingText", "载入分支中");
   },
   [syncConstants.GET_BRANCHES_SUCCESS]: (state, { payload }) => {
     console.log("GET_BRANCHES_SUCCESS", payload);
-    return state.delete("branchFetching").set("branches", payload);
+    return state
+      .delete("branchFetching")
+      .set("branches", payload)
+      .delete("loadingText");
   },
   [syncConstants.GET_BRANCHES_FAILED]: state => {
-    return state.delete("branchFetching");
+    return state.delete("branchFetching").delete("loadingText");
   }
 };

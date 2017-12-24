@@ -46,3 +46,10 @@ export const branchFetching = createSelector(state, state => {
 export const branches = createSelector(state, state => {
   return state.get("branches") || null;
 });
+
+/**
+ * 正在loading的样子信息
+ */
+export const loadingText = createSelector(state, state => {
+  return state.get("loadingText") || null;
+});

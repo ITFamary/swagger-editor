@@ -35,10 +35,11 @@ export default class EditorLayout extends React.Component {
       return <LoginFrame/>;
     }
 
+    const loadingText = commonSelectors.loadingText();
     return (
       <div>
-        <Loadable active="true" spinner="true" animate="true" text='Loading your content...'>
-        </Loadable>
+        {loadingText!=null?<Loadable active="true" spinner="true" animate="true" text={loadingText}>
+        </Loadable>:<div/>}
         <Container className='container'>
           <SplitPaneMode>
             <EditorContainer
