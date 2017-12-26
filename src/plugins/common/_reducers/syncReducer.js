@@ -7,16 +7,23 @@ export default {
     return state.delete("branches");
   },
   [syncConstants.BRANCH_SELECT]: (state, { payload }) => {
-    console.log("BRANCH_SELECT",payload);
+    console.log("BRANCH_SELECT", payload);
     // return state.delete("logging").set("login",payload);
+    // 更换了当前分支 实际上尚未完成
     return state.set("selectedBranch", payload);
   },
   [syncConstants.GET_SUCCESS]: (state, { payload }) => {
     console.log("GET_SUCCESS", state);
     // return state.delete("logging").set("login",payload);
     return state
+      .delete("syncSuspend")
       .set("currentApiId", payload.id)
-      .set("currentCommitId", payload.commitId);
+      .set("currentCommitId", payload.commitId)
+      .set("currentBranch", payload.branch);
+  },
+  [syncConstants.GET_FAILED]: state => {
+    // 一旦发生获取请求，表明当前工作区的互动应该通知
+    return state.delete("syncSuspend");
   },
   [syncConstants.GET_BRANCHES_REQUESTED]: state => {
     // start request
@@ -24,6 +31,10 @@ export default {
       .delete("branches")
       .set("branchFetching", true)
       .set("loadingText", "载入分支中");
+  },
+  [syncConstants.GET_REQUESTED]: state => {
+    // 一旦发生获取请求，表明当前工作区的互动应该通知
+    return state.set("syncSuspend", true);
   },
   [syncConstants.GET_BRANCHES_SUCCESS]: (state, { payload }) => {
     console.log("GET_BRANCHES_SUCCESS", payload);

@@ -2,7 +2,7 @@ import * as actions from "./_actions";
 import reducers from "./_reducers";
 import * as selectors from "./_selectors";
 import LoginFrame from "./_components/LoginFrame";
-import BranchSelector from './_components/BranchSelector';
+import BranchSelector from "./_components/BranchSelector";
 import createHistory from "history/createBrowserHistory";
 const history = createHistory();
 
@@ -26,8 +26,8 @@ export default function(system) {
     const commonActions = system.getSystem().commonActions;
     // 默认pathname 算是 /common-solution-manager/master
     const infos = location.pathname.split("/").filter(x => x.length > 0);
-    const id = infos[0];
-    const branch = infos.length > 1 ? infos[1] : "master";
+    const id = infos.length > 1 ? infos[infos.length - 2] : infos[0];
+    const branch = infos.length > 1 ? infos[infos.length - 1] : "master";
     console.log("id:", id, " ,branch:", branch);
     commonActions.get(id, branch);
   }, 1);
@@ -46,7 +46,7 @@ export default function(system) {
   // },10000);
 
   return {
-    components: { LoginFrame,BranchSelector },
+    components: { LoginFrame, BranchSelector },
     statePlugins: {
       common: {
         reducers,

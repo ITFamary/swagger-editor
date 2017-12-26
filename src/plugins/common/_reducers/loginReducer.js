@@ -15,12 +15,12 @@ export default {
     return state.set("logging", true);
   },
   [loginConstants.REFRESH_SUCCESS]: (state, { payload }) => {
-    console.log("REFRESH_SUCCESS", state, payload);
+    // console.log("REFRESH_SUCCESS", state, payload);
     return state.set("login", payload);
   },
   [loginConstants.REFRESH_FAILED]: state => {
     // 还有消息呢
-    console.log("REFRESH_FAILED", state);
+    // console.log("REFRESH_FAILED", state);
     return state.delete("login");
   }
 };

@@ -78,9 +78,9 @@ export function login(username, password) {
 export function refresh() {
   return ({ commonActions,specSelectors }) => {
     commonActions.refreshRequest();
-    console.log('specSelectors',specSelectors);
+    // console.log('specSelectors',specSelectors);
 
-    console.log('i am refreshing.');
+    // console.log('i am refreshing.');
     fetch("/loginStatus",{
         credentials: "include"
       })

@@ -1,9 +1,13 @@
+import createHistory from "history/createBrowserHistory";
 import "whatwg-fetch";
 import { syncConstants } from "../_constants";
 import queryString from "query-string";
 import jsonFormat from "json-format";
 import * as ThisAPISchema from "./common-api.json";
 import yaml from "js-yaml";
+
+const history = createHistory();
+
 const APISchema = {};
 Object.keys(ThisAPISchema)
   .filter(name => name !== "default")
@@ -35,10 +39,20 @@ export function getRequest() {
  * @param {String} commitId
  * @param {String} spec
  */
-export function getSuccess2(id, commitId, spec) {
+export function getSuccess2(id, branch, commitId, spec) {
+  //
+  const infos = history.location.pathname.split("/").filter(x => x.length > 0);
+  // 把之前id 如果之前
+  if (infos.length <= 2) history.push("/" + id + "/" + branch);
+  else {
+    infos[infos.length - 1] = branch;
+    infos[infos.length - 2] = id;
+    history.push("/"+infos.join("/"));
+  }
   return {
     type: syncConstants.GET_SUCCESS,
     payload: {
+      branch,
       commitId,
       spec,
       id
@@ -48,14 +62,14 @@ export function getSuccess2(id, commitId, spec) {
 
 /**
  * 成功获取到远程数据时；它会触发2个具体操作
- * @param {String} id
+ * @param {String} id 项目id
  * @param {Object} spec 包含yaml的object
  */
-export function getSuccess(id, spec) {
+export function getSuccess(id, branch, spec) {
   return ({ commonActions, specActions }) => {
     specActions.updateSpec(spec.yaml);
     console.log("make GET_SUCCESS action");
-    commonActions.getSuccess2(id, spec.id, spec);
+    commonActions.getSuccess2(id, branch, spec.id, spec);
   };
 }
 
@@ -89,7 +103,7 @@ export function get(id, branch = "master") {
       .then(
         json => {
           // console.log("next spec:", yaml);
-          commonActions.getSuccess(id, json);
+          commonActions.getSuccess(id, branch, json);
         },
         error => {
           commonActions.getFailed(error);
@@ -130,12 +144,16 @@ export function clearBranches() {
 
 /**
  * 选择分支
- * @param {String} branch 
+ * @param {String} branch
  */
 export function selectBranch(branch) {
-  return {
-    type: syncConstants.BRANCH_SELECT,
-    payload: branch
+  // 应当暂停所有的互动
+  return ({ commonActions, commonSelectors }) => {
+    commonActions.get(commonSelectors.currentApiId(), branch);
+    return {
+      type: syncConstants.BRANCH_SELECT,
+      payload: branch
+    };
   };
 }
 

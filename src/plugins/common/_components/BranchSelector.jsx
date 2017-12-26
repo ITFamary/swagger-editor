@@ -117,7 +117,7 @@ export default class BranchSelector extends React.Component {
             Cancel
           </button>
           <button className="btn" onClick={this.ok}>
-            Open file
+            Ok
           </button>
         </div>
       </Modal>

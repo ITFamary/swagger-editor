@@ -60,3 +60,10 @@ export const loadingText = createSelector(state, state => {
 export const selectedBranch = createSelector(state, state => {
   return state.get("selectedBranch") || null;
 });
+
+/**
+ * 同步状态是否被挂起
+ */
+export const syncSuspend = createSelector(state, state => {
+  return state.get("syncSuspend") || null;
+});
