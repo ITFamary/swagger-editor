@@ -19,12 +19,8 @@
       "post": {
         "summary": "从特定建立新分支，并且获取该分支的api yaml",
         "description": "新建分支",
-        "tags": [
-          "sync"
-        ],
-        "consumes": [
-          "application/json"
-        ],
+        "tags": ["sync"],
+        "consumes": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -47,10 +43,7 @@
                   "description": "新分支名称"
                 }
               },
-              "required": [
-                "from",
-                "to"
-              ]
+              "required": ["from", "to"]
             }
           }
         ],
@@ -67,9 +60,7 @@
       "get": {
         "summary": "获取某个项目所有的分支",
         "description": "所有分支",
-        "tags": [
-          "sync"
-        ],
+        "tags": ["sync"],
         "parameters": [
           {
             "name": "id",
@@ -82,7 +73,7 @@
           "200": {
             "description": "基于分支的array",
             "hold": {
-              "title":"稍微休息一会儿"
+              "title": "稍微休息一会儿"
             },
             "schema": {
               "type": "array",
@@ -98,10 +89,8 @@
     "/projectApiYaml/{id}/{branch}": {
       "put": {
         "summary": "更新该项目分支的api yaml",
-        "description": "需要把所有内容法伤",
-        "tags": [
-          "sync"
-        ],
+        "description": "需要把所有内容",
+        "tags": ["sync"],
         "parameters": [
           {
             "name": "id",
@@ -116,18 +105,23 @@
             "required": true
           }
         ],
+        "produces": ["text/plain"],
         "responses": {
           "200": {
-            "description": "正常的结果"
+            "description": "正常的结果",
+            "schema": {
+              "type": "string",
+              "description": "新的commit id",
+              "default": "newOne"
+            }
           }
         }
       },
       "get": {
         "summary": "获取项目某个分支的api yaml",
-        "description": "基本上就是这个api的schema 所以mock无需赘述，前端收获的数据是含有mock字段的即认为来自mock服务器，渲染本json的yaml即可",
-        "tags": [
-          "sync"
-        ],
+        "description":
+          "基本上就是这个api的schema 所以mock无需赘述，前端收获的数据是含有mock字段的即认为来自mock服务器，渲染本json的yaml即可",
+        "tags": ["sync"],
         "parameters": [
           {
             "name": "id",
@@ -157,10 +151,7 @@
                   "description": "yaml api"
                 }
               },
-              "required": [
-                "id",
-                "yaml"
-              ],
+              "required": ["id", "yaml"],
               "default": {
                 "id": "null",
                 "yaml": "mock"
@@ -173,10 +164,9 @@
     "/login": {
       "post": {
         "summary": "执行登录",
-        "description": "登录完成之后应该获取跟loginStatus一样的响应；mock时用户名为error就登录失败",
-        "tags": [
-          "login"
-        ],
+        "description":
+          "登录完成之后应该获取跟loginStatus一样的响应；mock时用户名为error就登录失败",
+        "tags": ["login"],
         "consumes": [
           "application/x-www-form-urlencoded",
           "multipart/form-data"
@@ -230,9 +220,7 @@
       "get": {
         "summary": "获取登录状态",
         "description": "包含权限信息",
-        "tags": [
-          "login"
-        ],
+        "tags": ["login"],
         "responses": {
           "200": {
             "description": "OK",
@@ -260,9 +248,7 @@
   "definitions": {
     "ProjectAuthority": {
       "type": "object",
-      "required": [
-        "id"
-      ],
+      "required": ["id"],
       "properties": {
         "id": {
           "type": "string",
@@ -292,9 +278,7 @@
           }
         }
       },
-      "required": [
-        "loginName"
-      ]
+      "required": ["loginName"]
     }
   }
 }

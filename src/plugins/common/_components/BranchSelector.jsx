@@ -88,12 +88,12 @@ export default class BranchSelector extends React.Component {
   render() {
     const { commonSelectors, commonActions } = this.props;
     const { selectBranch } = this.state;
-    console.log("commonSelectors", commonSelectors);
+    // console.log("commonSelectors", commonSelectors);
     if (!commonSelectors) {
       return <div />;
     }
     const branches = commonSelectors.branches();
-    console.log("branches", branches);
+    // console.log("branches", branches);
     if (!branches) {
       return <div />;
     }

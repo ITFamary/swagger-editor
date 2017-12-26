@@ -47,7 +47,7 @@ export function getSuccess2(id, branch, commitId, spec) {
   else {
     infos[infos.length - 1] = branch;
     infos[infos.length - 2] = id;
-    history.push("/"+infos.join("/"));
+    history.push("/" + infos.join("/"));
   }
   return {
     type: syncConstants.GET_SUCCESS,
@@ -77,6 +77,49 @@ export function getFailed(msg) {
   return {
     type: syncConstants.GET_FAILED,
     payload: msg
+  };
+}
+
+export function putApiRequest() {
+  return {
+    type: syncConstants.PUT_API_REQUESTED
+  };
+}
+
+export function putApiFailed(msg) {
+  return {
+    type: syncConstants.PUT_API_FAILED,
+    payload: msg
+  };
+}
+
+export function putApiSuccess(id) {
+  return {
+    type: syncConstants.PUT_API_SUCCESS,
+    payload: id
+  };
+}
+
+export function putApi(id, branch, spec) {
+  return ({ commonActions }) => {
+    commonActions.putApiRequest();
+    fetch("/projectApiYaml/" + id + "/" + branch, {
+      credentials: "include",
+      method: "put",
+      body: spec
+    })
+      .then(response => {
+        if (!response.ok) return Promise.reject("失败");
+        return response.text();
+      })
+      .then(
+        json => {
+          commonActions.putApiSuccess(json);
+        },
+        error => {
+          commonActions.putApiFailed(error);
+        }
+      );
   };
 }
 

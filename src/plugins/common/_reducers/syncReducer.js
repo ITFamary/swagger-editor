@@ -12,6 +12,10 @@ export default {
     // 更换了当前分支 实际上尚未完成
     return state.set("selectedBranch", payload);
   },
+  [syncConstants.PUT_API_SUCCESS]: (state, { payload }) => {
+    console.log("PUT_API_SUCCESS", payload);
+    return state.set("currentCommitId", payload);
+  },
   [syncConstants.GET_SUCCESS]: (state, { payload }) => {
     console.log("GET_SUCCESS", state);
     // return state.delete("logging").set("login",payload);

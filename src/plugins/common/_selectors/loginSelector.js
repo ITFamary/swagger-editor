@@ -27,6 +27,13 @@ export const currentApiId = createSelector(state, state => {
 });
 
 /**
+ * 当前工作分支
+ */
+export const currentBranch = createSelector(state, state => {
+  return state.get("currentBranch") || null;
+});
+
+/**
  * 最后一次拉取到的commitId
  */
 export const currentCommitId = createSelector(state, state => {
