@@ -1,6 +1,16 @@
 import { syncConstants } from "../_constants";
 
 export default {
+  [syncConstants.BRANCHES_CLEAR]: state => {
+    console.log("BRANCHES_CLEAR", state);
+    // return state.delete("logging").set("login",payload);
+    return state.delete("branches");
+  },
+  [syncConstants.BRANCH_SELECT]: (state, { payload }) => {
+    console.log("BRANCH_SELECT",payload);
+    // return state.delete("logging").set("login",payload);
+    return state.set("selectedBranch", payload);
+  },
   [syncConstants.GET_SUCCESS]: (state, { payload }) => {
     console.log("GET_SUCCESS", state);
     // return state.delete("logging").set("login",payload);

@@ -120,6 +120,26 @@ export function branchesFailed(msg) {
 }
 
 /**
+ * 清空分支
+ */
+export function clearBranches() {
+  return {
+    type: syncConstants.BRANCHES_CLEAR
+  };
+}
+
+/**
+ * 选择分支
+ * @param {String} branch 
+ */
+export function selectBranch(branch) {
+  return {
+    type: syncConstants.BRANCH_SELECT,
+    payload: branch
+  };
+}
+
+/**
  * 获取分支信息；
  * @param {String} id 项目id，若不传入则使用当前项目id
  */

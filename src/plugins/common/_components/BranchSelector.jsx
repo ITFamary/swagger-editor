@@ -23,6 +23,28 @@ const customStyles = {
   }
 };
 
+class Branch extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    // this.state = {
+    //   // 登录名
+    //   selectBranch: ""
+    // };
+    // // 绑定事件
+    this.selectMe = this.selectMe.bind(this);
+  }
+
+  render() {
+    const { name, selectBranch, onSelect } = this.props;
+    if (name == selectBranch) return <h1>{name}</h1>;
+    return <h3 onClick={this.selectMe}>{name}</h3>;
+  }
+  selectMe() {
+    const { name, onSelect } = this.props;
+    onSelect(name);
+  }
+}
+
 /**
  * 选择分支的工具
  */
@@ -30,9 +52,42 @@ export default class BranchSelector extends React.Component {
   //   componentDidMount() {
   //     if (this.refs.BranchSelector) this.refs.BranchSelector.show();
   //   }
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      // 登录名
+      selectBranch: ""
+    };
+
+    // // 绑定事件
+    this.selectBranch = this.selectBranch.bind(this);
+    this.ok = this.ok.bind(this);
+  }
+
+  selectBranch(name) {
+    console.log("to name:", name);
+    this.setState({
+      selectBranch: name
+    });
+  }
+
+  /**
+   * 选好了
+   */
+  ok() {
+    const { commonActions } = this.props;
+    const { selectBranch } = this.state;
+    commonActions.clearBranches();
+    // 如果选择了就推送 不然哼
+    if (selectBranch != "") {
+      commonActions.selectBranch(selectBranch);
+    }
+  }
+
   render() {
-    console.log(this.props);
-    const { commonSelectors } = this.props;
+    const { commonSelectors, commonActions } = this.props;
+    const { selectBranch } = this.state;
     console.log("commonSelectors", commonSelectors);
     if (!commonSelectors) {
       return <div />;
@@ -42,20 +97,29 @@ export default class BranchSelector extends React.Component {
     if (!branches) {
       return <div />;
     }
+    var rows = branches.map(name => (
+      <Branch
+        name={name}
+        selectBranch={selectBranch}
+        onSelect={this.selectBranch}
+      />
+    ));
+    if (rows.length == 0) rows = <p>暂无分支</p>;
+
     return (
       <Modal isOpen="true" style={customStyles}>
         <div className="container">
           <h2>选择分支</h2>
-          <input type="file" />
+          {rows}
         </div>
-        {/* <div className="right">
-          <button className="btn cancel" onClick={this.hideModal}>
+        <div className="buttons">
+          <button className="btn cancel" onClick={commonActions.clearBranches}>
             Cancel
           </button>
-          <button className="btn" onClick={this.importFromFile}>
+          <button className="btn" onClick={this.ok}>
             Open file
           </button>
-        </div> */}
+        </div>
       </Modal>
     );
   }

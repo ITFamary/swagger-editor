@@ -53,3 +53,10 @@ export const branches = createSelector(state, state => {
 export const loadingText = createSelector(state, state => {
   return state.get("loadingText") || null;
 });
+
+/**
+ * 选择了什么分支
+ */
+export const selectedBranch = createSelector(state, state => {
+  return state.get("selectedBranch") || null;
+});
