@@ -201,7 +201,7 @@ export default class Topbar extends React.Component {
               <li><button type="button" onClick={this.showModal}>Import File</button></li>
               <li role="separator"></li> */}
               <li><button type="button" onClick={commonActions.branches}>切换分支</button></li>
-              <li><button type="button" onClick={this.showModal}>新建分支</button></li>
+              <li><button type="button" onClick={commonActions.newBranch}>新建分支</button></li>
               <li role="separator"></li>
               <li><button type="button" onClick={this.saveAsYaml}>Download YAML</button></li>
               <li><button type="button" onClick={this.saveAsJson}>Download JSON</button></li>

@@ -49,11 +49,7 @@
         ],
         "responses": {
           "200": {
-            "description": "结果同GET /projectApiYaml",
-            "schema": {
-              "type": "string",
-              "default": "mock"
-            }
+            "description": "成功就是成功"
           }
         }
       },

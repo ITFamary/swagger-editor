@@ -200,6 +200,39 @@ export function selectBranch(branch) {
   };
 }
 
+export function newBranch() {
+  let name = prompt("新分支的名称:");
+  // 名字校验 应该只有 大小写英文数字以及-/.
+  if (name) {
+    const pattern = /^[a-zA-Z0-9-\_\.]+$/;
+    name = name.trim();
+    if (name.length < 1 || !name.match(pattern)) {
+      alert("请输入正确的分支名称");
+      return;
+    }
+    return ({ commonActions, commonSelectors }) => {
+      fetch("/projectBranches/" + commonSelectors.currentApiId(), {
+        credentials: "include",
+        method: "post",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          from: commonSelectors.currentBranch(),
+          to: name
+        })
+      })
+        .then(response => {
+          if (!response.ok) return Promise.reject("创建失败");
+          return true;
+        })
+        .then(() => {
+          commonActions.get(commonSelectors.currentApiId(), name);
+        });
+    };
+  }
+}
+
 /**
  * 获取分支信息；
  * @param {String} id 项目id，若不传入则使用当前项目id
