@@ -121,7 +121,7 @@
     },
     "/watchProjectApi/{id}/{branch}": {
       "get": {
-        "schema":[
+        "schemes":[
           "ws"
         ],
         "summary": "webSocket watch",

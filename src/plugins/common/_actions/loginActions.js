@@ -1,4 +1,5 @@
 import "whatwg-fetch";
+import queryString from "query-string";
 import { loginConstants } from "../_constants";
 
 export function refreshRequest() {
@@ -45,18 +46,26 @@ export function login(username, password) {
   return ({ commonActions }) => {
     commonActions.loginRequest();
 
-    var formData = new FormData();
+    // var formData = new FormData();
 
-    formData.append("username", username);
-    formData.append("password", password);
+    // formData.append("username", username);
+    // formData.append("password", password);
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
 
     fetch("/login",{
         method: "post",
         credentials: "include",
-        body: formData
+        headers: myHeaders,
+        body: queryString.stringify(
+          {
+            username:username,
+            password:password
+          }
+        )
       })
       .then(response => {
-        if (!response.ok) return Promise.reject("用户名或者密码不正确");
+        if (!response.ok || response.status === 240) return Promise.reject("用户名或者密码不正确");
         return response.json();
       })
       .then(
@@ -85,7 +94,7 @@ export function refresh() {
         credentials: "include"
       })
       .then(response => {
-        if (!response.ok) return Promise.reject("尚未登录");
+        if (!response.ok || response.status === 240) return Promise.reject("尚未登录");
         return response.json();
       })
       .then(

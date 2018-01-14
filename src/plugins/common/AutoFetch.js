@@ -17,7 +17,7 @@ class Connection {
     this.onUpdate = this.onUpdate.bind(this);
     this.id = id;
     this.branch = branch;
-    this.socket = new WebSocket("ws:" + location("/watchProjectApiYaml/" + id + "/" + branch));
+    this.socket = new WebSocket("ws:" + location("/watchProjectApi/" + id + "/" + branch));
     this.socket.onmessage = this.onUpdate;
     this.commitIdSupplier = commitIdSupplier;
     this.updater = updater;
