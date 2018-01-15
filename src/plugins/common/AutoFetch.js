@@ -30,6 +30,7 @@ class Connection {
   onUpdate(event) {
     // https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent
     // event.data
+    console.log('recieved from WS:',event.data);
     if (event.data != this.commitIdSupplier()) {
       // 执行
       this.updater(this.id, this.branch);

@@ -90,7 +90,6 @@ export default function(system) {
         "//" +
         window.location.hostname +
         (window.location.port ? ":" + window.location.port : "") +
-        contextPath +
         path
       );
     });
