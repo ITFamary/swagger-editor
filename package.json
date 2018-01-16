@@ -24,7 +24,7 @@
     "deps-size": "webpack -p --config webpack.check.js --json | webpack-bundle-size-analyzer >| $npm_package_config_deps_check_dir/sizes.txt",
     "predev": "npm install",
     "dev": "npm-run-all --parallel hot-server open-dev",
-    "hot-server": "wds-with-api-mocker --localApiFile src/plugins/common/_actions/common-api.json --host 0.0.0.0 --config webpack-hot-dev-server.config.js --inline --hot --progress --content-base dev-helpers/",
+    "hot-server": "webpack-dev-server-am --host 0.0.0.0 --config webpack-hot-dev-server.config.js --inline --hot --progress --content-base dev-helpers/",
     "open-dev": "sleep 3 && node -e 'require(\"open\")(\"http://localhost:3200\")'",
     "open-static": "node -e 'require(\"open\")(\"http://localhost:3001\")'",
     "lint": "eslint --cache --ext '.js,.jsx' src test",
@@ -40,8 +40,8 @@
     "watch": "webpack --config  ./webpack-dist.config.js --watch --progress"
   },
   "dependencies": {
+    "@mingshz/api-mocker": "latest",
     "ajv": "^5.2.2",
-    "api-mocker": "file:../common-solution-frontend/api-mocker",
     "boron": "^0.2.3",
     "bowser": "1.6.1",
     "classnames": "^2.1.3",
@@ -69,6 +69,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "@mingshz/webpack-api-mocker": "^1.14.0",
     "autoprefixer": "6.6.1",
     "babel-core": "^6.23.1",
     "babel-eslint": "^6.1.2",
@@ -121,7 +122,6 @@
     "url-loader": "0.5.6",
     "webpack": "^1.14.0",
     "webpack-bundle-size-analyzer": "^2.5.0",
-    "webpack-local-api-mocker": "file:../common-solution-frontend/webpack-local-api-mocker",
     "worker-loader": "^0.7.1",
     "yaml-js": "^0.1.4"
   },
@@ -132,8 +132,5 @@
     "> 1%",
     "last 2 versions",
     "IE 10"
-  ],
-  "optionalDependencies": {
-    "webpack-dev-server": "1.14.0"
-  }
+  ]
 }

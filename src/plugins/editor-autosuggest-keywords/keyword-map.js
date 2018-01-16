@@ -1,4 +1,4 @@
-import {KeywordSuggest} from "api-mocker"
+import {KeywordSuggest} from "@mingshz/api-mocker"
 
 var Bool = ["true", "false"]
 var Anything = String

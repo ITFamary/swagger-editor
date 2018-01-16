@@ -14,3 +14,4 @@ _mockServer
 .vscode
 *.request
 Dockerfile.node
+.mock

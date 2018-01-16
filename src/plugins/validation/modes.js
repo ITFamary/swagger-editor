@@ -1,6 +1,6 @@
 import swagger2Schema from "./structural-validation/swagger2-schema"
 import oas3Schema from "./structural-validation/oas3-schema"
-import {SchemaSuggest} from "api-mocker"
+import {SchemaSuggest} from "@mingshz/api-mocker"
 
 SchemaSuggest.forSwagger(swagger2Schema)
 
