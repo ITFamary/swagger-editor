@@ -62,13 +62,14 @@ export default function(system) {
   var nextPushTimer = null;
   function changeHappen(spec) {
     const { commonSelectors, commonActions } = system.getSystem();
-    if (commonSelectors.syncSuspend()) {
-      //暂时不关心修改
-      return;
-    }
     if (nextPushTimer) {
       clearTimeout(nextPushTimer);
       nextPushTimer = null;
+    }
+    
+    if (commonSelectors.syncSuspend()) {
+      //暂时不关心修改
+      return;
     }
 
     nextPushTimer = setTimeout(() => {

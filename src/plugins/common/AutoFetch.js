@@ -47,14 +47,14 @@ class Connection {
   }
 }
 
+// 需要监听
+var currentConnection;
 /**
  *
  * @param {*} system UI系统
  * @param {*} location 可以获取 //: 开头的地址function
  */
 export default function(system, location) {
-  // 需要监听
-  var currentConnection;
   const store = system.getSystem().getStore();
 
   function checkConnection() {
