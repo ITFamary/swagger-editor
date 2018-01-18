@@ -5,6 +5,9 @@ export default function spec() {
         selectors: {
 
           getSpecLineFromPath: (state, path) => ({fn: { AST }, specSelectors: { specStr }}) => {
+            if (path && path._tail && path._tail.array){
+               path = path._tail.array
+            }
             return AST.getLineNumberForPath(specStr(), path)
           },
 
@@ -16,8 +19,13 @@ export default function spec() {
               fn: { transformPathToArray }
             } = system
 
+            // console.log('bestJumpPath', path);
             // We"ve been given an explicit path? Use that...
             if(path) {
+              // 如果 path是对象 那么转换为array
+              if (path && path._tail && path._tail.array){
+                  path = path._tail.array
+              }
               return typeof path === "string" ? transformPathToArray(path, specJson().toJS()) : path
             }
 
