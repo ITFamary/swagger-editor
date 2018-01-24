@@ -74,3 +74,10 @@ export const selectedBranch = createSelector(state, state => {
 export const syncSuspend = createSelector(state, state => {
   return state.get("syncSuspend") || null;
 });
+
+/**
+ * 用户最后修改时间。
+ */
+export const userLastEdit = createSelector(state, state => {
+  return state.get("userLastEdit") || 0;
+});

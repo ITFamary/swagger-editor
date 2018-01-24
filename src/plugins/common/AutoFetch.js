@@ -15,12 +15,23 @@ class Connection {
     this.match = this.match.bind(this);
     this.close = this.close.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
+    this.createSocket = this.createSocket.bind(this);
     this.id = id;
     this.branch = branch;
-    this.socket = new WebSocket("ws:" + location("/watchProjectApi/" + id + "/" + branch));
-    this.socket.onmessage = this.onUpdate;
+    this.location = location;
+    this.createSocket();
     this.commitIdSupplier = commitIdSupplier;
     this.updater = updater;
+  }
+
+  createSocket(){
+    if(this.closed){
+      console.log('链接已关闭');
+      return;
+    }
+    this.socket = new WebSocket("ws:" + this.location("/watchProjectApi/" + this.id + "/" + this.branch));
+    this.socket.onmessage = this.onUpdate;
+    this.socket.onclose = this.createSocket;
   }
 
   /**
@@ -42,6 +53,7 @@ class Connection {
   }
 
   close() {
+    this.closed = true;
     console.log("close connection for ", this.id, ",", this.branch);
     this.socket.close();
   }

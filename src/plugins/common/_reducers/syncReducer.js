@@ -1,6 +1,11 @@
 import { syncConstants } from "../_constants";
 
 export default {
+  [syncConstants.USER_EDIT]: (state, { payload }) => {
+    // return state.delete("logging").set("login",payload);
+    // 更换了当前分支 实际上尚未完成
+    return state.set("userLastEdit", payload);
+  },
   [syncConstants.BRANCHES_CLEAR]: state => {
     console.log("BRANCHES_CLEAR", state);
     // return state.delete("logging").set("login",payload);

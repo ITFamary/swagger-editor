@@ -14,6 +14,8 @@ const location = history.location;
 //   // location is an object like window.location
 //   console.log(action, location.pathname, location.state)
 // })
+
+var lastAPI;
 export default function(system) {
   console.log("prepare to plugin", {
     common: {
@@ -56,22 +58,38 @@ export default function(system) {
   }
   setTimeout(heart, 500);
   setInterval(heart, 30000);
+  function autoPull() {
+    const commonActions = system.getSystem().commonActions;
+    if (commonActions) {
+      commonActions.getCurrentIfIdle();
+    }
+  }
+  if(document._autoPullTimer){
+    clearInterval(document._autoPullTimer);
+    document._autoPullTimer = null;
+  }
+  document._autoPullTimer = setInterval(autoPull, 60000);
 
   // errActions.
 
   var nextPushTimer = null;
+  // 代码改变时则记录时间，若太长时间没有调整，从服务端自动获取
   function changeHappen(spec) {
+    console.log('spec changed');
     const { commonSelectors, commonActions } = system.getSystem();
     if (nextPushTimer) {
       clearTimeout(nextPushTimer);
       nextPushTimer = null;
     }
+
+    commonActions.userEditEvent(new Date().getTime());
     
     if (commonSelectors.syncSuspend()) {
       //暂时不关心修改
       return;
     }
 
+    console.log('try to schdule put request');
     nextPushTimer = setTimeout(() => {
       if (commonSelectors.syncSuspend()) {
         //暂时不关心修改
@@ -112,7 +130,10 @@ export default function(system) {
           updateSpec: ori => (...args) => {
             let [spec] = args;
             ori(...args);
-            console.log("发生了什么？", args);
+            console.log("编辑事件发生");
+            if(spec===lastAPI)
+              return;
+            lastAPI = spec;  
             // saveContentToStorage(spec);
             changeHappen(spec);
           }

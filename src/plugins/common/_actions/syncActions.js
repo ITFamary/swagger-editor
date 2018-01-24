@@ -101,7 +101,11 @@ export function putApiSuccess(id) {
 }
 
 export function putApi(id, branch, spec) {
-  return ({ commonActions }) => {
+  return ({ commonSelectors, commonActions }) => {
+    console.log('try to put');
+    if (commonSelectors.syncSuspend())
+      return;
+    console.log('make put request');
     commonActions.putApiRequest();
     fetch("/projectApiYaml/" + id + "/" + branch, {
       credentials: "include",
@@ -258,5 +262,29 @@ export function branches(id) {
           commonActions.branchesFailed(error);
         }
       );
+  };
+}
+
+export function userEditEvent(time){
+  return {
+    type: syncConstants.USER_EDIT,
+    payload: time
+  };
+}
+
+/**
+ * 若太长时间没有编辑，则获取最新版本
+ */
+export function getCurrentIfIdle(){
+  return ({ commonSelectors, commonActions }) => {
+    const currentApiId = commonSelectors.currentApiId();
+    const currentBranch = commonSelectors.currentBranch();
+    console.log('getCurrentIfIdle for:', currentApiId ,':', currentBranch, ' time:', commonSelectors.userLastEdit());
+    if(!currentApiId || !currentBranch)
+    return;
+    // 若10秒没有编辑
+    if(new Date().getTime()-commonSelectors.userLastEdit() > 10000){
+      commonActions.get(currentApiId, currentBranch); 
+    }
   };
 }
